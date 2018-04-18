@@ -1,3 +1,100 @@
+<?php
+
+
+include('config.php');
+include('functions.php');
+
+$action = $_GET['action'];
+
+//Get heroid from url if it exists
+$heroid = get('heroid');
+
+// Get Hero Races to populate dropdown
+$sql = file_get_contents('sql/getRace.sql');
+$statement = $database->prepare($sql);
+$statement->execute();
+$races = $statement->fetchAll(PDO::FETCH_ASSOC); 
+
+// Get Hero Classes to populate dropdown
+$sql = file_get_contents('sql/getClass.sql');
+$statement = $database->prepare($sql);
+$statement->execute();
+$classes = $statement->fetchAll(PDO::FETCH_ASSOC); 
+$playerid = $_SESSION['playerid'];
+
+//Set hero to null
+$hero = null;
+//if heroid is not empty get hero record into $hero variable from the database
+	// Set $hero equal to the first hero in $heroes
+if(!empty($heroid)) {
+	$sql = file_get_contents('sql/getHeroEdit.sql');
+	$params = array(
+		'heroid' => $heroid
+	);
+	$statement = $database->prepare($sql);
+	$statement->execute($params);
+	$heroes = $statement->fetchAll(PDO::FETCH_ASSOC);
+	
+	$hero = $heroes[0];
+}
+	
+// If form submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$name = $_POST['hero-name'];
+	$race = $_POST['race'];
+	$class = $_POST['class'];
+	$gender = $_POST['gender'];
+	
+	
+	if($action == 'add') {
+		// Insert hero
+		$sql = file_get_contents('sql/insertHero.sql');
+		$params = array(
+			'name' => $name,
+			'race' => $race,
+			'class' => $class,
+			'gender' => $gender
+		);
+	
+		$statement = $database->prepare($sql);
+		$statement->execute($params);
+		
+	$database->exec($sql);	
+    $last_id = $database->lastInsertId();
+		
+		// Insert into the bridge Player/hero table
+		$sql = file_get_contents('sql/insertPlayerHero.sql');
+		$params = array(
+			'playerid' => $playerid,
+			'heroid' => $last_id
+		);
+	
+		$statement = $database->prepare($sql);
+		$statement->execute($params);
+		
+		header('location: heroes.php');
+		Die();
+		
+		}
+		elseif ($action == 'edit') {
+			$sql = file_get_contents('sql/updateHero.sql');
+        $params = array( 
+            'name' => $name,
+			'race' => $race,
+			'class' => $class,
+			'gender' => $gender,
+			'heroid' => $heroid
+        );
+        
+        $statement = $database->prepare($sql);
+        $statement->execute($params);
+		
+		header('location: heroes.php');
+		Die();
+		}
+	}
+
+?>
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -23,12 +120,12 @@
   <header><a href="index.php">
     <h4 class="logo">HEROCONNECT</h4>
     </a>
-    <nav>
+   <nav>
       <ul>
-           <li><a href="index.php">HOME</a></li>
-        <li><a href="create.php">CREATE</a></li>
+        <li><a href="index.php">HOME</a></li>
+        <li><a href="create.php?action=add">CREATE</a></li>
         <li> <a href="heroes.php">HEROES</a></li>
-		  
+		  <li> <a href="login.php">LOGIN</a></li>
       </ul>
     </nav>
 	  
@@ -43,36 +140,27 @@
     <h2 class="createheader" align="center">CREATE</h2>
     <p class="createdescription" align="center">Fill out this form and click submit to create a new hero.</p>
     </section>
-  <!-- Stats Gallery Section -->
+  <!-- Form Section -->
 <form action="" method="POST" align="center">
-	<div class="form-element">
-		<label>Player Name:  </label><input type="text"></div><br />
-	<div class="form-element">
-	<label>Player Address:  </label><input type="text"></div><br />
-		<div class="form-element">
-	<label>Player Email: </label><input type="text"></div><br />
 			<div class="form-element">
-	<label>Hero Name:  </label><input type="text"></div><br />
+	<label>Hero Name:  </label>
+	<input type="text" name="hero-name" value="<?php echo $hero['name'] ?>"></div><br />
 	<div class="form-element">
 		<label>Race:  </label>
-	<select>
-		<option value="Human">Human</option>
-		<option value="Elf">Elf</option>	
-		<option value="HalfElf">Half-Elf</option>
-		<option value="Dwarf">Dwarf</option>
-		<option value="Hafling">Halfling</option>
-		<option value="Gnome">Gnome</option>
-	</select></div><br />
+	<select name="race">
+	<?php foreach($races as $race) : ?>
+		<option value="<?php echo $race['raceid'] ?>"><?php echo $race['racename'] ?></option>
+		<?php endforeach; ?>
+			</select></div><br />
 	<div class="form-element">
 	<label>Class: </label>
-	<select>
-		<option value="Fighter">Fighter</option>
-		<option value="Wizard">Wizard</option>
-		<option value="Rogue">Rogue</option>
-		<option value="Cleric">Cleric</option>
-	</select></div><br />
+	<select name="class">
+	<?php foreach($classes as $class) : ?>
+		<option value="<?php echo $class['classid'] ?>"><?php echo $class['classname'] ?></option>
+		<?php endforeach; ?>
+			</select></div><br />
 	<div class="form-element">
-	<label>Gender: </label><input type="radio" name="gender" value="male"> Male	<input type="radio" name="gender" value="female"> Female<br></div>
+	<label>Gender: </label><input type="radio" name="gender" value="Male"> Male	<input type="radio" name="gender" value="Female"> Female <br></div>
 	<div class="form-element">
 		<input type="submit" class="button" />
 		<input type="reset" class="button" />

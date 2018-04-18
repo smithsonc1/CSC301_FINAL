@@ -2,13 +2,36 @@
 
 include('config.php');
 include('functions.php');
-// Get search term from URL using the get function
+$action = $_GET['action'];
 
-$term = get('search-term');
-$playerid = $_SESSION['playerid'];
-
-$heroes = searchHeroes($term, $database);
-
+// If form submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$name = $_POST['player-name'];
+	$address = $_POST['address'];
+	$email = $_POST['email'];
+	
+	
+	if($action == 'add') {
+		// Insert user
+		$sql = file_get_contents('sql/insertUser.sql');
+		$params = array(
+			'username' => $username,
+			'password' => $password,
+			'name' => $name,
+			'address' => $address,
+			'email' => $email
+		);
+	
+		$statement = $database->prepare($sql);
+		$statement->execute($params);
+		
+		// Redirect to the login.php file
+		header('location: login.php');
+		die();
+	}
+}
 
 ?>
 <!doctype html>
@@ -36,7 +59,7 @@ $heroes = searchHeroes($term, $database);
   <header><a href="index.php">
     <h4 class="logo">HEROCONNECT</h4>
     </a>
-   <nav>
+    <nav>
       <ul>
         <li><a href="index.php">HOME</a></li>
         <li><a href="create.php?action=add">CREATE</a></li>
@@ -51,41 +74,35 @@ $heroes = searchHeroes($term, $database);
     <h2 class="hero_header">HERO CONNECT</h2>
     <p class="tagline">Building a community of heroes</p>
   </section>
-  <!-- About Section -->
+ 
   <section class="create" id="create">
-    <h2 class="createheader" align="center">Heroes</h2>
-    <p class="createdescription" align="center">Search Heroes Here</p>
+    <h2 class="createheader" align="center">Login / Sign Up</h2>
+    <p class="createdescription" align="center">New User</p>
     </section>
-  <!-- Stats Gallery Section -->
-<form action="" method="GET" align="center">
-	<div class-"form-element">
-		<label>Hero Name: </label><input type="text" name="search-term"></div><br />
+ 
+<form action="" method="POST" align="center">
+	<div class="form-element">
+		<label>Username: </label><input type="text" name="username"></div><br />
+	<div class="form-element">
+		<label>Password: </label><input type="text" name="password"></div><br />
+		<div class="form-element">
+		<label>Full Name: </label><input type="text" name="player-name"></div><br />
+		<div class="form-element">
+		<label>Address: </label><input type="text" name="address"></div><br />
+		<div class="form-element">
+		<label>Email: </label><input type="text" name="email"></div><br />
+		
 		<div class="form-element">
 		<input type="submit" class="button" />	
 	</form><br><hr><br>
-	<?php if(empty($heroes)) : ?> 
-	<h2 class="heroheader" align="center">No Heroes Match this Criteria</h2>
-	<?php else : ?> 
-	<?php foreach($heroes as $hero) : ?>
-		<?php if($hero['playerid'] == $playerid) : ?>
-	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
-    <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
-	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
-	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="create.php?action=edit&heroid=<?php echo $hero['heroid'] ?>">Edit Hero</a></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
-		<?php else : ?>
-	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
-    <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
-	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
-	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
-		<?php endif; ?>
-		<?php endforeach; ?>
-		<?php endif; ?>
-		
-		
-  
+	
+	
+	
+	
+    <!-- Parallax Section -->
+    <!-- More Info Section -->
+
+  <!-- Footer Section -->
 
  <!-- Main Container Ends -->
 	</div>

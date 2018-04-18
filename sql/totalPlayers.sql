@@ -1,0 +1,1 @@
+select COUNT(*) as count FROM finalplayer;

@@ -4,10 +4,11 @@ include('config.php');
 include('functions.php');
 // Get search term from URL using the get function
 
-$term = get('search-term');
+$heroid = get('heroid');
 $playerid = $_SESSION['playerid'];
 
-$heroes = searchHeroes($term, $database);
+$heroes = searchHero($heroid, $database);
+$hero = $heroes[0];
 
 
 ?>
@@ -53,36 +54,21 @@ $heroes = searchHeroes($term, $database);
   </section>
   <!-- About Section -->
   <section class="create" id="create">
-    <h2 class="createheader" align="center">Heroes</h2>
-    <p class="createdescription" align="center">Search Heroes Here</p>
+    <h2 class="createheader" align="center">Hero Details</h2>
+    <p class="createdescription" align="center">More Details and Player Contact</p>
     </section>
-  <!-- Stats Gallery Section -->
-<form action="" method="GET" align="center">
-	<div class-"form-element">
-		<label>Hero Name: </label><input type="text" name="search-term"></div><br />
-		<div class="form-element">
-		<input type="submit" class="button" />	
-	</form><br><hr><br>
-	<?php if(empty($heroes)) : ?> 
-	<h2 class="heroheader" align="center">No Heroes Match this Criteria</h2>
-	<?php else : ?> 
-	<?php foreach($heroes as $hero) : ?>
-		<?php if($hero['playerid'] == $playerid) : ?>
+  
+	<br><hr><br>
+		
 	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
     <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
 	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
+	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['racename'] ?></p>
 	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="create.php?action=edit&heroid=<?php echo $hero['heroid'] ?>">Edit Hero</a></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
-		<?php else : ?>
-	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
-    <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
-	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
-	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
-		<?php endif; ?>
-		<?php endforeach; ?>
-		<?php endif; ?>
+	<p class="attribute" align="center"><b>Username: </b><?php echo $hero['username'] ?></p>
+	<p class="attribute" align="center"><b>Email: </b><a href="mailto:<?php echo $hero['email'] ?>" target="_top"><?php echo $hero['email'] ?></a></p>
+	
+	
 		
 		
   

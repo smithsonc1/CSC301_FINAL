@@ -1,3 +1,17 @@
+<?php 
+
+include('config.php');
+include('functions.php');
+$sql = file_get_contents('sql/totalPlayers.sql');
+	
+	$statement = $database->prepare($sql);
+	$statement->execute();
+	$users = $statement->fetchAll(PDO::FETCH_ASSOC);
+	
+	$user = $users[0];
+	
+	
+?>
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -25,10 +39,10 @@
     </a>
     <nav>
       <ul>
-           <li><a href="index.php">HOME</a></li>
-        <li><a href="create.php">CREATE</a></li>
+        <li><a href="index.php">HOME</a></li>
+        <li><a href="create.php?action=add">CREATE</a></li>
         <li> <a href="heroes.php">HEROES</a></li>
-		  
+		  <li> <a href="login.php">LOGIN</a></li>
       </ul>
     </nav>
 	  
@@ -41,16 +55,22 @@
   <!-- About Section -->
   <section class="about" id="about">
     <h2 class="aboutheader" align="center">ABOUT</h2>
-    <p class="aboutdescription">Create a hero and connect to other players in this table top networking webpage.  On the toolbar click "CREATE" to create a hero. If you need to edit your hero, or want to see who you can connect with go to the "HEROES" page at the top of the page.  If you need to ever head back to the homepage just click "HOME" or click the logo at the top left of the page. </p>
+    <p class="aboutdescription" align="center">Create a hero and connect to other players in this table top networking webpage.  On the toolbar click "CREATE" to create a hero. If you need to edit your hero, or want to see who you can connect with go to the "HEROES" page at the top of the page.  If you need to ever head back to the homepage just click "HOME" or click the logo at the top left of the page. </p>
     </section>
   <!-- Stats Gallery Section -->
+  
   <div class="gallery" align="center">
-      <div class="thumbnail">
-      <h1 class="stats">2300</h1>
+      <div class="thumbnail" align="center">
+      <h1 class="stats" align="center"><?php echo $user['count'] ?></h1>
       <h4>PLAYERS</h4>
       <p>Registered in the database</p>
+	  <?php if(isset($_SESSION['playerid'])) : ?>
+	  <p>Welcome <?php echo $player1->playerName ?></p>
+	  <?php endif; ?>
     </div>
     </div>
+	<br>
+	
     <!-- Parallax Section -->
     <!-- More Info Section -->
 

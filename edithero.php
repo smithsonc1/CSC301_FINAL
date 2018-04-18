@@ -63,26 +63,25 @@ $heroes = searchHeroes($term, $database);
 		<div class="form-element">
 		<input type="submit" class="button" />	
 	</form><br><hr><br>
-	<?php if(empty($heroes)) : ?> 
+	<!-- <//?php if(empty($hero)) : ?> 
 	<h2 class="heroheader" align="center">No Heroes Match this Criteria</h2>
-	<?php else : ?> 
+	<//?php else : ?> -->
 	<?php foreach($heroes as $hero) : ?>
 		<?php if($hero['playerid'] == $playerid) : ?>
 	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
     <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
 	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
 	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="create.php?action=edit&heroid=<?php echo $hero['heroid'] ?>">Edit Hero</a></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
+	<p><a href="edithero.php?action=edit&heroid=<?php echo $hero['heroid'] ?>">Edit Hero</a></p>
+	<p><a href="herodetails.php=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
 		<?php else : ?>
 	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
     <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
 	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
 	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
+	<p><a href="herodetails.php=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
 		<?php endif; ?>
 		<?php endforeach; ?>
-		<?php endif; ?>
 		
 		
   

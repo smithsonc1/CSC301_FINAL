@@ -1,8 +1,15 @@
 @charset "UTF-8";
+/* Form */
+
+label {
+	display: inline-block;
+	width: 120px;
+	text-align: right;	
+}
 /* Body */
 body {
 	font-family: source-sans-pro;
-	background-color: #7C6513;
+	background-color: #f2f2f2;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
@@ -15,15 +22,15 @@ body {
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
-	height: 1000px;
+	height: auto;
 	background-color: #FFFFFF;
 }
 /* Navigation */
 header {
 	width: 100%;
 	height: 5%;
-	background-color: #B02A2A;
-	border-bottom: 1px solid #441010;
+	background-color: #52bad5;
+	border-bottom: 1px solid #2C9AB7;
 }
 .logo {
 	color: #fff;
@@ -73,9 +80,9 @@ ul li:hover a {
 }
 /* Hero Section */
 .hero {
-	background-color: #B3B3B3;
-	padding-top: 15px;
-	padding-bottom: 5px;
+	background-color: #52bad5;
+	padding-top: 150px;
+	padding-bottom: 150px;
 }
 .light {
 	font-weight: bold;
@@ -107,11 +114,7 @@ ul li:hover a {
 	display: inline-block;
 	background-color: #FFFFFF;
 	margin-top: 0px;
-}
-.aboutdescription {
-	text-align: center;
-	padding-left: 100px;
-	padding-right: 100px;
+	
 }
 /* Stats Gallery */
 .stats {
@@ -123,18 +126,20 @@ ul li:hover a {
 	display: inline-block;
 	width: 100%;
 	background-color: #FFFFFF;
+	margin-right: auto;
+	margin-left: auto;
 	/* [disabled]min-width: 400px;
 */
-	padding-bottom: 35px;
+	/padding-bottom: 35px;
 	padding-top: 0px;
 	margin-top: -5px;
 	margin-bottom: 0px;
 }
 .thumbnail {
-	width: 25%;
+	width: 100%;
 	text-align: center;
+	float: left;
 	margin-top: 35px;
-	align: center;
 }
 .gallery .thumbnail h4 {
 	margin-top: 5px;
@@ -167,7 +172,19 @@ ul li:hover a {
 	letter-spacing: 2px;
 	margin-top: 0px;
 }
-
+.parallax_description {
+	color: #FFFFFF;
+	text-align: right;
+	padding-right: 100px;
+	width: 30%;
+	float: right;
+	font-weight: lighter;
+	line-height: 23px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
 /* More info */
 footer {
 	background-color: #FFFFFF;
@@ -222,32 +239,40 @@ footer .footer_column p {
 	color: #FFFFFF;
 	transition: all 0.3s linear;
 }
+
+ a {
+	text-decoration: none;
+}
 .button:hover {
 	background-color: #FEFEFE;
 	color: #C4C4C4;
 	cursor: pointer;
 }
-
+.copyright {
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	background-color: #717070;
+	color: #FFFFFF;
+	text-transform: uppercase;
+	font-weight: lighter;
+	letter-spacing: 2px;
+	border-top-width: 2px;
+}
 .footer_banner {
 	background-color: #B3B3B3;
 	padding-top: 60px;
 	padding-bottom: 60PX;
 	margin-bottom: 0px;
-	margin-top: 200px;
-	
+	margin-top: 50px;
+	background-image: url(../images/pattern.png);
+	background-repeat: repeat;
 }
 footer {
 	display: inline-block;
 }
 .hidden {
 	display: none;
-}
-/* Form */
-
-label {
-	display: inline-block;
-	width: 100px;
-	text-align: right;	
 }
 
 /* Mobile */
@@ -294,8 +319,32 @@ nav ul li {
 	width: 100%;
 	margin-top: 0px;
 }
-
-
+.parallax {
+	text-align: center;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 40%;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	width: 100%;
+	font-size: 18px;
+}
+.parallax_description {
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	width: 90%;
+	margin-top: 25px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 12px;
+	float: none;
+	text-align: center;
+}
 .banner {
 	background-color: #2D9AB7;
 	background-image: none;
@@ -359,14 +408,57 @@ nav ul li {
 .thumbnail {
 	width: 100%;
 }
-
-
-
+.footer_column {
+	width: 100%;
+	margin-top: 0px;
+}
+.parallax {
+	text-align: center;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 40%;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	width: 100%;
+	font-size: 18px;
+}
+.parallax_description {
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	margin-top: 30%;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	float: none;
+	width: 100%;
+	text-align: center;
+}
 .thumbnail {
 	width: 50%;
 }
-
-
+.parallax {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-top: 20%;
+}
+.parallax_description {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	width: 100%;
+	padding-top: 30px;
+}
 .banner {
 	padding-left: 20px;
 	padding-right: 20px;

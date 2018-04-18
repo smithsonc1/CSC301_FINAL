@@ -1,14 +1,40 @@
 <?php 
 
+// Create and include a configuration file with the database connection
 include('config.php');
+
+// Include functions for application
 include('functions.php');
-// Get search term from URL using the get function
 
-$term = get('search-term');
-$playerid = $_SESSION['playerid'];
-
-$heroes = searchHeroes($term, $database);
-
+// If form submitted:
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	// Get username and password from the form as variables
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	
+	// Query records that have usernames and passwords that match those in the customers table
+	$sql = file_get_contents('sql/attemptLogin.sql');
+	$params = array(
+		'username' => $username,
+		'password' => $password
+	);
+	$statement = $database->prepare($sql);
+	$statement->execute($params);
+	$users = $statement->fetchAll(PDO::FETCH_ASSOC);
+	
+	// If $users is not empty
+	if(!empty($users)) {
+		// Set $user equal to the first result of $users
+		$user = $users[0];
+		
+		// Set a session variable with a key of customerID equal to the customerID returned
+		$_SESSION['playerid'] = $user['playerid'];
+		
+		//Redirect to the index.php file
+		header('location: index.php');
+		Die();
+	}
+}
 
 ?>
 <!doctype html>
@@ -36,10 +62,10 @@ $heroes = searchHeroes($term, $database);
   <header><a href="index.php">
     <h4 class="logo">HEROCONNECT</h4>
     </a>
-   <nav>
+    <nav>
       <ul>
         <li><a href="index.php">HOME</a></li>
-        <li><a href="create.php?action=add">CREATE</a></li>
+        <li><a href="create.php">CREATE</a></li>
         <li> <a href="heroes.php">HEROES</a></li>
 		  <li> <a href="login.php">LOGIN</a></li>
       </ul>
@@ -53,39 +79,23 @@ $heroes = searchHeroes($term, $database);
   </section>
   <!-- About Section -->
   <section class="create" id="create">
-    <h2 class="createheader" align="center">Heroes</h2>
-    <p class="createdescription" align="center">Search Heroes Here</p>
+    <h2 class="createheader" align="center">Login / Sign Up</h2>
+    <p class="createdescription" align="center">Login</p>
     </section>
   <!-- Stats Gallery Section -->
-<form action="" method="GET" align="center">
-	<div class-"form-element">
-		<label>Hero Name: </label><input type="text" name="search-term"></div><br />
+<form action="" method="POST" align="center">
+	<div class="form-element">
+		<label>Username: </label><input type="text" name="username"></div><br />
+	<div class="form-element">
+		<label>Password: </label><input type="password" name="password"></div><br />
 		<div class="form-element">
 		<input type="submit" class="button" />	
 	</form><br><hr><br>
-	<?php if(empty($heroes)) : ?> 
-	<h2 class="heroheader" align="center">No Heroes Match this Criteria</h2>
-	<?php else : ?> 
-	<?php foreach($heroes as $hero) : ?>
-		<?php if($hero['playerid'] == $playerid) : ?>
-	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
-    <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
-	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
-	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="create.php?action=edit&heroid=<?php echo $hero['heroid'] ?>">Edit Hero</a></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
-		<?php else : ?>
-	<h2 class="heroheader" align="center"><?php echo $hero['name'] ?></h2>
-    <p class="attribute" align="center"><b>Race: </b><?php echo $hero['racename'] ?>
-	<p class="attribute" align="center"><b>Class: </b><?php echo $hero['classname'] ?></p>
-	<p class="attribute" align="center"><b>Gender: </b><?php echo $hero['gender'] ?></p>
-	<p><a href="herodetails.php?heroid=<?php echo $hero['heroid'] ?>">View Details</a></p><br>
-		<?php endif; ?>
-		<?php endforeach; ?>
-		<?php endif; ?>
-		
-		
-  
+	
+	<p class="createdescription" align="center"><a href="newuser.php?action=add">New User?</a></p><br>
+	<p class="createdescription" align="center"><a href="logout.php">Logout</a></p><br>
+	
+ 
 
  <!-- Main Container Ends -->
 	</div>
